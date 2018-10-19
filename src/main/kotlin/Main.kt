@@ -1,9 +1,9 @@
+import io.reactivex.rxkotlin.subscribeBy
+
 fun main(args: Array<String>) {
     val r = Server(Network.Mainnet)
 
-    r.close()
-
-//    r.getAccountInfo(GetAccountParams("rrrrrrrrrrrrrrrrrrrrBZbvji"))
+//    r.getAccountInfo(GetAccountParams("1234"))
 //        .subscribeBy(
 //            onNext={
 //                println("no error:")
@@ -23,4 +23,12 @@ fun main(args: Array<String>) {
 //
 //    r.getTxInfo(GetTxInfoParams("55C99B26DB61307D6003ADA5946F505D70C06259DE11A6A3CFCB321D4D718C43"))
 //        .subscribe { println(it) }
+
+    r.signTx(SignTxParams(Transaction(
+        account = "",
+        hash = "",
+        transactionType = TransactionType.Payment,
+        destination = "",
+        amount = Amount("", "", "")
+    )))
 }

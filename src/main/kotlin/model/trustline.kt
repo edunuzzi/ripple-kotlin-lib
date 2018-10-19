@@ -36,5 +36,5 @@ data class GetTrustLinesResult(
 )
 
 data class GetTrustLinesResponse(
-    val result: GetTrustLinesResult
+    val result: GetTrustLinesResult?
 ) : Response()

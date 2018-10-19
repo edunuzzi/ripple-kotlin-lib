@@ -68,7 +68,9 @@ enum class ErrorType {
     @SerializedName("forbidden")
     Forbidden,
     @SerializedName("couldNotConnect")
-    CouldNotConnect
+    CouldNotConnect,
+    @SerializedName("fee_mult_max")
+    FeeMultMax,
 }
 
 data class ErrorResponse(
