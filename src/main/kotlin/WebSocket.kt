@@ -3,14 +3,14 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
-import org.json.JSONObject
-import java.awt.SystemColor.text
 import java.net.URI
 
 class WebSocket : WebSocketClient {
 
     val res = BehaviorSubject.create<String>()
     val gson = Gson()
+
+    val connectionErrorID = "-1"
 
     constructor(serverURI: URI) : super(serverURI)
 
@@ -29,23 +29,36 @@ class WebSocket : WebSocketClient {
     }
 
     override fun onError(ex: Exception) {
-        // TODO Deal with me!!
         ex.printStackTrace()
+        res.onNext(
+            gson.toJson(
+                ErrorResponse(
+                    Status.Error,
+                    ErrorType.UnknownErr,
+                    connectionErrorID,
+                    -1,
+                    ex.toString(),
+                    null
+                )
+            )
+        )
     }
 
-    inline fun <T:Param, reified S:Response>sendAndListen(obj: T): Observable<S> {
+    inline fun <T : Param, reified S : Response> sendAndListen(obj: T): Observable<S> {
         super.send(gson.toJson(obj))
 
-        // TODO Improve me!!
         return res
             .map {
-                val err = gson.fromJson(it, ErrorResponse::class.java)
+                val parsedjson = gson.fromJson(it, S::class.java)
 
-                if (err.status == Status.Error && err.id == obj.id) {
-                    throw err
+                if (
+                    parsedjson.status == Status.Error &&
+                    (parsedjson.id == obj.id || parsedjson.id == connectionErrorID)
+                ) {
+                    throw gson.fromJson(it, ErrorResponse::class.java)
                 }
 
-                gson.fromJson(it, S::class.java)
+                parsedjson
             }
             .filter { it.id == obj.id }
     }

@@ -16,7 +16,7 @@ data class TrustLine(
     val currency: String,
     val limit: String,
     @SerializedName("limit_peer") val limitPeer: String,
-    @SerializedName("quality_in" ) val qualityIn: Int,
+    @SerializedName("quality_in") val qualityIn: Int,
     @SerializedName("quality_out") val qualityOut: Int,
     @SerializedName("no_ripple") val noRipple: Boolean?,
     @SerializedName("no_ripple_peer") val noRipplePeer: Boolean?,

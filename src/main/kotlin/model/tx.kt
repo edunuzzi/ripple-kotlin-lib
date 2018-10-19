@@ -55,7 +55,8 @@ data class SubmitTxParams(
 ) : Param()
 
 enum class EngineResult {
-    @SerializedName("tesSUCCESS") TesSUCCESS
+    @SerializedName("tesSUCCESS")
+    TesSUCCESS
 }
 
 data class SubmitTxResult(

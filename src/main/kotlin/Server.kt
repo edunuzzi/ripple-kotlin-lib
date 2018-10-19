@@ -1,6 +1,6 @@
 import java.net.URI
 
-class Server(network: Network) {
+abstract class BaseServer(network: Network) {
 
     val ws = WebSocket(URI(network.baseURL))
 
@@ -12,3 +12,6 @@ class Server(network: Network) {
         ws.closeBlocking()
     }
 }
+
+class AdminServer(network: Network) : BaseServer(network)
+class Server(network: Network) : BaseServer(network)
